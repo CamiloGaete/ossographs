@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --green-primary: #7AB648;
+  --green-secondary: #8DC63F;
+  --green-hover: #6CA23F;
+  --green-dark: #4A8A2A;
+  --green-tint: #E8F5D9;
+  --green-glow: rgba(122, 182, 72, 0.3);
+  --dark-charcoal: #1A1A1A;
+  --near-black: #242424;
+  --charcoal: #2D2D2D;
+  --white: #FFFFFF;
+  --off-white: #FAFAFA;
+  --light-gray: #F3F4F6;
+  --medium-gray: #9CA3AF;
+  --border-gray: #D1D5DB;
+}
+
+@theme inline {
+  --color-green-primary: var(--green-primary);
+  --color-green-secondary: var(--green-secondary);
+  --color-green-hover: var(--green-hover);
+  --color-green-dark: var(--green-dark);
+  --color-green-tint: var(--green-tint);
+  --color-dark: var(--dark-charcoal);
+  --color-near-black: var(--near-black);
+  --color-charcoal: var(--charcoal);
+  --color-off-white: var(--off-white);
+  --color-light-gray: var(--light-gray);
+  --color-medium-gray: var(--medium-gray);
+  --color-border-gray: var(--border-gray);
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--white);
+  color: var(--dark-charcoal);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--green-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
