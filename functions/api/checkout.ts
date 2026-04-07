@@ -9,6 +9,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return new Response(JSON.stringify({ error: "No items" }), { status: 400 });
   }
 
+  const hasInvalidQty = body.items.some(
+    (i) => !Number.isInteger(i.quantity) || i.quantity < 1
+  );
+  if (hasInvalidQty) {
+    return new Response(
+      JSON.stringify({ error: "All quantities must be positive integers" }),
+      { status: 400 }
+    );
+  }
+
   // Fetch products from D1 to validate prices
   const ids = body.items.map((i) => i.id);
   const placeholders = ids.map(() => "?").join(",");
@@ -47,15 +57,24 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   await env.DB.batch(stmts);
 
   // Build MercadoPago preference
-  const mpItems = body.items.map((item) => {
-    const product = products.find((p) => p.id === item.id)!;
-    return {
-      title: product.name,
-      quantity: item.quantity,
-      unit_price: product.price,
+  const SHIPPING_FEE = 3990;
+  const mpItems = [
+    ...body.items.map((item) => {
+      const product = products.find((p) => p.id === item.id)!;
+      return {
+        title: product.name,
+        quantity: item.quantity,
+        unit_price: product.price,
+        currency_id: "CLP",
+      };
+    }),
+    {
+      title: "Envío",
+      quantity: 1,
+      unit_price: SHIPPING_FEE,
       currency_id: "CLP",
-    };
-  });
+    },
+  ];
 
   const preference: Record<string, unknown> = {
     items: mpItems,
