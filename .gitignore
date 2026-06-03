@@ -13,7 +13,8 @@ dist/
 *.tsbuildinfo
 
 # claude code
-.claude/
+.claude/*
+!.claude/skills/
 
 # session data
 .remember/
